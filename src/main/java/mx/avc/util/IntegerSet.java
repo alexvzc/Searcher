@@ -177,10 +177,10 @@ public class IntegerSet implements Set<Integer> {
 
         } else {
             boolean removed = false;
-            for(int i = bitSet.nextSetBit(0); i >= 0;
-                    i = bitSet.nextSetBit(i + 1)) {
-                if(!those.contains(i)) {
-                    bitSet.clear(i);
+            for(int bit_index = bitSet.nextSetBit(0); bit_index >= 0;
+                    bit_index = bitSet.nextSetBit(bit_index + 1)) {
+                if(!those.contains(bit_index)) {
+                    bitSet.clear(bit_index);
                     removed = true;
                 }
             }

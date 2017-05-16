@@ -5,24 +5,24 @@
 
 package mx.avc.searcher.app;
 
-import java.util.Random;
+import static java.text.MessageFormat.format;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import mx.avc.searcher.AStarSearcher;
 import mx.avc.searcher.BlindSearcher;
+import static mx.avc.searcher.BlindSearcher.SearchType.BREATH_FIRST;
+import static mx.avc.searcher.BlindSearcher.SearchType.DEPTH_FIRST;
 import mx.avc.searcher.IDAStarSearcher;
 import mx.avc.searcher.PathSearcher;
 import mx.avc.searcher.StateController;
 import mx.avc.searcher.UnreachableStateException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import static java.text.MessageFormat.format;
-import static mx.avc.searcher.BlindSearcher.SearchType.BREATH_FIRST;
-import static mx.avc.searcher.BlindSearcher.SearchType.DEPTH_FIRST;
 
 /**
  *
@@ -295,7 +295,7 @@ public class NPuzzleSearcher {
                 self.stateToString(initialState),
                 state_operator.getDistance(initialState, goals)));
 
-        for(SearchType stype : EnumSet.of(SearchType.DEPTH, SearchType.BREATH, SearchType.ASTAR, SearchType.IDASTAR)) {
+        for(SearchType stype : EnumSet.of(SearchType.ASTAR, SearchType.IDASTAR)) {
             switch(stype) {
                 case BREATH:
                     ps = new BlindSearcher<Long, Move>(BREATH_FIRST,
@@ -327,7 +327,7 @@ public class NPuzzleSearcher {
                 Long state = initialState;
                 LOGGER.info(format("Initial state: {0}",
                         self.stateToString(state)));
-                for(Move move : path.size() > 100 ? path.subList(0, 100) : path) {
+                for(Move move : path) {
                     state = state_operator.nextState(state, move);
                     LOGGER.info(format("Next state {0}: {1}", move.name(),
                             self.stateToString(state)));

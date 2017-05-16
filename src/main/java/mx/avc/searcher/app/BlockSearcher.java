@@ -5,8 +5,7 @@
 
 package mx.avc.searcher.app;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import static java.text.MessageFormat.format;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -17,12 +16,13 @@ import java.util.Map;
 import java.util.Set;
 import mx.avc.searcher.AStarSearcher;
 import mx.avc.searcher.BlindSearcher;
+import static mx.avc.searcher.BlindSearcher.SearchType.BREATH_FIRST;
+import static mx.avc.searcher.BlindSearcher.SearchType.DEPTH_FIRST;
 import mx.avc.searcher.PathSearcher;
 import mx.avc.searcher.StateController;
 import mx.avc.searcher.UnreachableStateException;
-import static java.text.MessageFormat.format;
-import static mx.avc.searcher.BlindSearcher.SearchType.BREATH_FIRST;
-import static mx.avc.searcher.BlindSearcher.SearchType.DEPTH_FIRST;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  *
