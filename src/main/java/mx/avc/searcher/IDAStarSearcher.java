@@ -5,13 +5,12 @@
 
 package mx.avc.searcher;
 
+import java.util.Deque;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.Set;
-import mx.avc.util.Deque;
-import mx.avc.util.LinkedDeque;
 
 /**
  *
@@ -30,17 +29,17 @@ public class IDAStarSearcher<S, M> extends AbstractAStarSearcher<S, M> {
         super(state_controller);
     }
 
+    @Override
     public List<? extends M> search(S initial_state, Set<S> final_states) {
 
-        statesToInspect = new LinkedDeque<StateData<S, M>>();
-        fringeStates = new LinkedList<StateData<S, M>>();
-        generatedStates = new HashSet<S>(1 << 10, LOAD_FACTOR);
+        statesToInspect = new LinkedList<>();
+        fringeStates = new LinkedList<>();
+        generatedStates = new HashSet<>(1 << 10, LOAD_FACTOR);
         finalStates = final_states;
 
         float cost_limit =
                 stateController.getDistance(initial_state, finalStates);
-        StateData<S, M> state_data =
-                new StateData<S, M>(initial_state, cost_limit);
+        StateData<S, M> state_data = new StateData<>(initial_state, cost_limit);
         state_data.fScore = state_data.hScore;
         statesToInspect.addFirst(state_data);
         generatedStates.add(initial_state);
@@ -100,7 +99,7 @@ public class IDAStarSearcher<S, M> extends AbstractAStarSearcher<S, M> {
                 float f_score = g_score + h_score;
 
                 StateData<S, M> next_state_data =
-                        new StateData<S, M>(next_state, h_score);
+                        new StateData<>(next_state, h_score);
                 next_state_data.fromStateData = state_data;
                 next_state_data.movement = next_move;
                 next_state_data.gScore = g_score;

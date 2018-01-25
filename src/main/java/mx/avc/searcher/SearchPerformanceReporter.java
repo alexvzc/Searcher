@@ -5,8 +5,8 @@
 
 package mx.avc.searcher;
 
-import org.apache.commons.logging.Log;
 import static java.text.MessageFormat.format;
+import org.slf4j.Logger;
 
 /**
  *
@@ -51,7 +51,7 @@ public abstract class SearchPerformanceReporter {
         }
     }
 
-    public abstract Log getLogger();
+    public abstract Logger getLogger();
 
     /**
      * @return the generatedStates

@@ -7,9 +7,9 @@ package mx.avc.searcher;
 
 
 import java.util.List;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import static java.text.MessageFormat.format;
+import org.slf4j.Logger;
+import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  *
@@ -18,8 +18,7 @@ import static java.text.MessageFormat.format;
 
 public aspect ExecTimeReportAspect pertarget(exec()) {
 
-    private static final Log LOGGER =
-            LogFactory.getLog(ExecTimeReportAspect.class);
+    private static final Logger LOGGER = getLogger(ExecTimeReportAspect.class);
 
     private long startTime;
 

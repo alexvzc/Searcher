@@ -21,8 +21,8 @@ import static mx.avc.searcher.BlindSearcher.SearchType.DEPTH_FIRST;
 import mx.avc.searcher.PathSearcher;
 import mx.avc.searcher.StateController;
 import mx.avc.searcher.UnreachableStateException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  *
@@ -30,7 +30,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class BlockSearcher {
 
-    private static final Log LOGGER = LogFactory.getLog(BlockSearcher.class);
+    private static final Logger LOGGER = getLogger(BlockSearcher.class);
 
     public static final char EMPTY = '\ufffe';
 
@@ -65,8 +65,9 @@ public class BlockSearcher {
     public static class BlockStateOperator implements
             StateController<String, String> {
 
+        @Override
         public Set<String> nextMovements(String current_state) {
-            Set<String> moves = new HashSet<String>();
+            Set<String> moves = new HashSet<>();
 
             List<String> columns = Arrays.asList(splitState(current_state));
 
@@ -93,8 +94,9 @@ public class BlockSearcher {
             return moves;
         }
 
+        @Override
         public String nextState(String current_state, String movement) {
-            List<String> columns = new ArrayList<String>(
+            List<String> columns = new ArrayList<>(
                     Arrays.asList(current_state.split("\\|")));
 
             char origin_block = movement.charAt(0);
@@ -127,6 +129,7 @@ public class BlockSearcher {
             return mergeState(columns.toArray(new String[columns.size()]));
         }
 
+        @Override
         public float getDistance(String current_state, Set<String> final_states) {
             if(final_states.contains(current_state)) {
                 return 0f;
@@ -159,6 +162,7 @@ public class BlockSearcher {
             return ret;
         }
 
+        @Override
         public float getCost(String current_state, String movement) {
             return 1f;
         }
@@ -166,7 +170,7 @@ public class BlockSearcher {
     }
 
     protected static Map<Character, Integer> countChars(String s) {
-        Map<Character, Integer> ch_set = new HashMap<Character, Integer>();
+        Map<Character, Integer> ch_set = new HashMap<>();
 
         for(int i = 0; i < s.length(); i++) {
             Character ch = s.charAt(i);
@@ -216,16 +220,14 @@ public class BlockSearcher {
 
         switch(stype) {
             case BREATH:
-                ps = new BlindSearcher<String, String>(BREATH_FIRST,
-                        state_operator);
+                ps = new BlindSearcher<>(BREATH_FIRST, state_operator);
                 break;
             case ASTAR:
-                ps = new AStarSearcher<String, String>(state_operator);
+                ps = new AStarSearcher<>(state_operator);
                 break;
             case DEPTH:
             default:
-                ps = new BlindSearcher<String, String>(DEPTH_FIRST,
-                        state_operator);
+                ps = new BlindSearcher<>(DEPTH_FIRST, state_operator);
                 break;
         }
 

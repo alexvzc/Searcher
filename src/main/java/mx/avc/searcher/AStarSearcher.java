@@ -28,13 +28,13 @@ public class AStarSearcher<S, M> extends AbstractAStarSearcher<S, M> {
         super(state_controller);
     }
 
+    @Override
     public List<? extends M> search(S initial_state, Set<S> final_states) {
-        statesToInspect =
-                new PriorityQueue<StateData<S, M>>(11, new StateComparator());
-        generatedStates = new HashMap<S, StateData<S, M>>();
+        statesToInspect = new PriorityQueue<>(11, new StateComparator());
+        generatedStates = new HashMap<>();
         finalStates = final_states;
 
-        StateData<S, M> state_data = new StateData<S, M>(initial_state,
+        StateData<S, M> state_data = new StateData<>(initial_state,
                 stateController.getDistance(initial_state, finalStates));
         state_data.fScore = state_data.hScore;
         generatedStates.put(initial_state, state_data);
@@ -70,7 +70,7 @@ public class AStarSearcher<S, M> extends AbstractAStarSearcher<S, M> {
             StateData<S, M> next_state_data;
 
             if(!generatedStates.containsKey(next_state)) {
-                next_state_data = new StateData<S, M>(next_state,
+                next_state_data = new StateData<>(next_state,
                         stateController.getDistance(next_state,
                         finalStates));
                 next_state_data.fromStateData = state_data;

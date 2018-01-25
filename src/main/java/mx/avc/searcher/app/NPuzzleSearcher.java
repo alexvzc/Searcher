@@ -21,8 +21,8 @@ import mx.avc.searcher.IDAStarSearcher;
 import mx.avc.searcher.PathSearcher;
 import mx.avc.searcher.StateController;
 import mx.avc.searcher.UnreachableStateException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  *
@@ -30,7 +30,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class NPuzzleSearcher {
 
-    private static final Log LOGGER = LogFactory.getLog(NPuzzleSearcher.class);
+    private static final Logger LOGGER = getLogger(NPuzzleSearcher.class);
 
     private enum SearchType {
 
@@ -79,7 +79,7 @@ public class NPuzzleSearcher {
         maxRows = square_size;
         maxCols = square_size;
         tileSpaces = maxRows * maxCols;
-        Map<Integer, Set<Move>> m = new HashMap<Integer, Set<Move>>();
+        Map<Integer, Set<Move>> m = new HashMap<>();
 
         for(int i = 0; i < tileSpaces; i++) {
             int column = i % maxCols;
@@ -110,7 +110,7 @@ public class NPuzzleSearcher {
             state = (state << 4) | i;
         }
 
-        result = Long.valueOf(state);
+        result = state;
     }
 
     private int getIndexDelta(Move move) {
@@ -215,11 +215,13 @@ public class NPuzzleSearcher {
 
     private class Operator implements StateController<Long, Move> {
 
+        @Override
         public Set<? extends Move> nextMovements(Long current_state) {
             int index = computeEmptyTile(current_state);
             return possibleMoves.get(index);
         }
 
+        @Override
         public Long nextState(Long current_state, Move move) {
             long state = current_state;
             int emptyt_pos = computeEmptyTile(state);
@@ -238,6 +240,7 @@ public class NPuzzleSearcher {
             return state;
         }
 
+        @Override
         public float getDistance(Long current, Set<Long> goals) {
             float ret = Float.POSITIVE_INFINITY;
 
@@ -272,6 +275,7 @@ public class NPuzzleSearcher {
             return ret;
         }
 
+        @Override
         public float getCost(Long current_state, Move movement) {
             return 1f;
         }
@@ -298,22 +302,20 @@ public class NPuzzleSearcher {
         for(SearchType stype : EnumSet.of(SearchType.ASTAR, SearchType.IDASTAR)) {
             switch(stype) {
                 case BREATH:
-                    ps = new BlindSearcher<Long, Move>(BREATH_FIRST,
-                            state_operator);
+                    ps = new BlindSearcher<>(BREATH_FIRST, state_operator);
                     break;
                 case ASTAR:
                     if(self.tileSpaces > 9) {
                         continue;
                     }
-                    ps = new AStarSearcher<Long, Move>(state_operator);
+                    ps = new AStarSearcher<>(state_operator);
                     break;
                 case IDASTAR:
-                    ps = new IDAStarSearcher<Long, Move>(state_operator);
+                    ps = new IDAStarSearcher<>(state_operator);
                     break;
                 case DEPTH:
                 default:
-                    ps = new BlindSearcher<Long, Move>(DEPTH_FIRST,
-                            state_operator);
+                    ps = new BlindSearcher<>(DEPTH_FIRST, state_operator);
                     break;
             }
 

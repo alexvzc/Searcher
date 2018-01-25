@@ -40,6 +40,7 @@ public abstract class AbstractAStarSearcher<S, M>
     protected static class StateComparator<S, M>
             implements Comparator<StateData<S, M>> {
 
+        @Override
         public int compare(StateData<S, M> a, StateData<S, M> b) {
             int ret = Float.valueOf(a.fScore).compareTo(b.fScore);
             if(ret == 0) {

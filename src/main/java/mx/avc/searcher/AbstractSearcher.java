@@ -7,7 +7,6 @@ package mx.avc.searcher;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  *
@@ -21,12 +20,13 @@ public abstract class AbstractSearcher<S, M> implements PathSearcher<S, M> {
         stateController = my_state_controller;
     }
 
+    @Override
     public StateController<S, M> getStateController() {
         return stateController;
     }
 
     protected List<? extends M> buildReversePath(StateData<S, M> state_data) {
-        List<M> solution_path = new ArrayList<M>();
+        List<M> solution_path = new ArrayList<>();
         while(state_data.fromStateData != null) {
             solution_path.add(0, state_data.movement);
             state_data = state_data.fromStateData;

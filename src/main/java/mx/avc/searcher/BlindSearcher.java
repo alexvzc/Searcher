@@ -5,11 +5,11 @@
 
 package mx.avc.searcher;
 
+import java.util.Deque;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import mx.avc.util.Deque;
-import mx.avc.util.LinkedDeque;
 
 /**
  *
@@ -31,12 +31,12 @@ public class BlindSearcher<S, M> extends AbstractSearcher<S, M> {
         searchType = search_type;
     }
 
+    @Override
     public List<? extends M> search(S initial_state, Set<S> final_states) {
-        Deque<StateData<S, M>> states_to_inspect =
-                new LinkedDeque<StateData<S, M>>();
-        Set<S> visited_states = new HashSet<S>();
+        Deque<StateData<S, M>> states_to_inspect = new LinkedList<>();
+        Set<S> visited_states = new HashSet<>();
 
-        StateData<S, M> state_data = new StateData<S, M>(initial_state);
+        StateData<S, M> state_data = new StateData<>(initial_state);
         visited_states.add(initial_state);
 
         states_to_inspect.add(state_data);
@@ -57,7 +57,7 @@ public class BlindSearcher<S, M> extends AbstractSearcher<S, M> {
 
                 if(!visited_states.contains(next_state)) {
                     StateData<S, M> next_state_data =
-                            new StateData<S, M>(next_state);
+                            new StateData<>(next_state);
                     next_state_data.fromStateData = state_data;
                     next_state_data.movement = next_move;
                     visited_states.add(next_state);
